@@ -11,4 +11,15 @@
     <p>{{ object.descricao }}</p>
     <img src="{{ object.thumb.url }}" alt="">
 
+    <h2>Episódios</h2>
+    
+    {% for episodio in object.episodios.all %}       {# necessário usar 'all' no final #}
+        <a href="{{ episodio.video}}">
+            <p>Epísódio {{ forloop.counter }}: {{ episodio.titulo }}</p>
+        </a>
+    {% endfor %}
+
+     
+    
+
 {% endblock %}
