@@ -11,7 +11,20 @@
         <a href="{% url 'filme:detalhesfilme' filme.pk %}">{{ filme }}</a>   {# ou filme.titulo#}
         <p>{{ filme.descricao }}</p>
         <img src="{{ filme.thumb.url }}" alt="">
-    {% endfor %}
-        
+    {% endfor %}        
+</div>
+
+<div class="py-10">
+    <h2>Filmes Recentes</h2>
+    {% for filme_recente in lista_filmes_recentes %}
+            <p>{{ filme_recente }}</p>
+    {% endfor %}     
+</div>
+
+<div class="py-10">
+    <h2>Filmes em Alta</h2>
+    {% for filme_emalta in lista_filmes_emalta %}
+            <p>{{ filme_emalta }}</p>
+    {% endfor %}     
 </div>
 {% endblock %}

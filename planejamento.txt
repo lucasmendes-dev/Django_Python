@@ -15,7 +15,7 @@
     - data de criação
     - Episódios
         - videos
-        -titulo
+        - titulo
     
 - Barra de Pesquisa
 
