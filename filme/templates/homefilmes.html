@@ -7,8 +7,8 @@
 {% block content %}
 <div class="py-10">
     <h1>HomeFilmes</h1>
-    {% for filme in lista_filmes %}
-        <p>{{ filme }}</p>
+    {% for filme in object_list %}
+        <a href="{% url 'filme:detalhesfilme' filme.pk %}">{{ filme }}</a>   {# ou filme.titulo#}
         <p>{{ filme.descricao }}</p>
         <img src="{{ filme.thumb.url }}" alt="">
     {% endfor %}
