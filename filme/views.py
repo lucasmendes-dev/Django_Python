@@ -36,6 +36,19 @@ class DetalhesFilme(DetailView):
       return context
 
 
+class PesquisaFilme(ListView):
+   template_name = "pesquisa.html"
+   model = Filme
+   
+   
+   def get_queryset(self):
+      pesquisa = self.request.GET.get('query')  #nome do 'id' ou 'name' definido no html
+      if pesquisa:
+         object_list = Filme.objects.filter(titulo__icontains=pesquisa) #nomecoluna__icontains
+         return object_list
+      else:
+         return None
+      
 
 
 #FBV - Function Based Views
