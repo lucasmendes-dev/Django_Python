@@ -1,21 +1,28 @@
-from django.shortcuts import render
-from .models import Filme
+from django.shortcuts import render, redirect
+from .models import Filme, Usuario
 from django.views.generic import TemplateView, ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin   #lib para controlar o acesso de pág. somente quando o usuário estiver logado
 
 
 #CBV - Class Based Views
 
-class HomePage(TemplateView):
+class HomePage(TemplateView):   
    template_name = "homepage.html"
+   
+   def get(self, request, *args, **kwargs):
+      if request.user.is_authenticated:
+         return redirect('filme:homefilmes')   #nomeapp.urlname
+      else:
+         return super().get(request, *args, **kwargs)   #redireciona para a homepage
 
 
-class HomeFilmes(ListView):
+class HomeFilmes(LoginRequiredMixin, ListView):
    template_name = "homefilmes.html"
    model = Filme   #passa uma lista com o nome: 'object_list' para o template
    # object_list -> lista de itens do modelo
    
 
-class DetalhesFilme(DetailView):
+class DetalhesFilme(LoginRequiredMixin, DetailView):
    template_name = "detalhesfilme.html"
    model = Filme
    # object -> 1 item do modelo
@@ -38,7 +45,7 @@ class DetalhesFilme(DetailView):
       return context
 
 
-class PesquisaFilme(ListView):
+class PesquisaFilme(LoginRequiredMixin, ListView):
    template_name = "pesquisa.html"
    model = Filme
    
@@ -51,6 +58,12 @@ class PesquisaFilme(ListView):
       else:
          return None
       
+      
+class PaginaPerfil(LoginRequiredMixin, TemplateView):
+   template_name = "editarperfil.html"
+   #model = Usuario
+
+
 
 
 #FBV - Function Based Views
