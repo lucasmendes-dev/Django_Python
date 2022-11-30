@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser   #import de usuário
 
 
 LISTA_CATEGORIAS = (
@@ -8,6 +9,8 @@ LISTA_CATEGORIAS = (
     ("apresentacao", "Apresentação"),
     ("outros", "Outros")
 )
+
+#Lembrar de cadastrar suas models no arquivo admin.py para poder usá-las no /admin 
 
 class Filme(models.Model):    
     titulo = models.CharField(max_length=100)
@@ -28,3 +31,8 @@ class Episodio(models.Model):
     
     def __str__(self):
         return self.filme.titulo + " - " + self.titulo
+    
+    
+class Usuario(AbstractUser):
+    #criar apenas campos novos
+    filmes_vistos = models.ManyToManyField("Filme")   #nome da clase para se relacionar
