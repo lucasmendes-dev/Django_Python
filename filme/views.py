@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from .models import Filme, Usuario
-from django.views.generic import TemplateView, ListView, DetailView
+from .forms import CriarContaForm
+from django.views.generic import TemplateView, ListView, DetailView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin   #lib para controlar o acesso de pág. somente quando o usuário estiver logado
 
 
@@ -60,9 +61,19 @@ class PesquisaFilme(LoginRequiredMixin, ListView):
       
       
 class PaginaPerfil(LoginRequiredMixin, TemplateView):
-   template_name = "editarperfil.html"
-   #model = Usuario
-
+   template_name = "editarperfil.html"   
+   
+   
+class CriarConta(FormView):
+   template_name = "criarconta.html"
+   form_class = CriarContaForm
+   
+   def form_valid(self, form):
+      form.save()
+      return super().form_valid(form)
+   
+   def get_success_url(self):
+      return reverse('filme:login')
 
 
 
