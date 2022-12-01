@@ -9,3 +9,7 @@ class CriarContaForm(UserCreationForm):
     class Meta:
         model = Usuario
         fields = ('username', 'email', 'password1', 'password2')
+        
+
+class FormHomePage(forms.Form):
+    email = forms.EmailField(label=False)

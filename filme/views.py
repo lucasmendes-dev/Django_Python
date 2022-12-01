@@ -1,21 +1,31 @@
 from django.shortcuts import render, redirect, reverse
 from .models import Filme, Usuario
-from .forms import CriarContaForm
-from django.views.generic import TemplateView, ListView, DetailView, FormView
+from .forms import CriarContaForm, FormHomePage
+from django.views.generic import TemplateView, ListView, DetailView, FormView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin   #lib para controlar o acesso de pág. somente quando o usuário estiver logado
 
 
 #CBV - Class Based Views
 
-class HomePage(TemplateView):   
+class HomePage(FormView):   
    template_name = "homepage.html"
+   form_class = FormHomePage
    
    def get(self, request, *args, **kwargs):
       if request.user.is_authenticated:
          return redirect('filme:homefilmes')   #nomeapp.urlname
       else:
          return super().get(request, *args, **kwargs)   #redireciona para a homepage
-
+      
+   def get_success_url(self):
+      email = self.request.POST.get("email")
+      usuarios = Usuario.objects.filter(email=email)
+      
+      if usuarios:
+         return reverse("filme:login")
+      else:
+         return reverse("filme:criarconta")
+      
 
 class HomeFilmes(LoginRequiredMixin, ListView):
    template_name = "homefilmes.html"
@@ -60,8 +70,17 @@ class PesquisaFilme(LoginRequiredMixin, ListView):
          return None
       
       
-class PaginaPerfil(LoginRequiredMixin, TemplateView):
+class PaginaPerfil(LoginRequiredMixin, UpdateView):
    template_name = "editarperfil.html"   
+   model = Usuario
+   fields = [
+      'first_name',
+      'last_name',
+      'email'
+   ]
+   
+   def get_success_url(self):
+      return reverse('filme:homefilmes')
    
    
 class CriarConta(FormView):
@@ -73,7 +92,7 @@ class CriarConta(FormView):
       return super().form_valid(form)
    
    def get_success_url(self):
-      return reverse('filme:login')
+      return reverse('filme:login')  
 
 
 

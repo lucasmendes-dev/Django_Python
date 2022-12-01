@@ -18,7 +18,7 @@
             </div>
         
             <div class="mr-2">
-                <a href="{% url 'filme:editarperfil' %}">
+                <a href="{% url 'filme:editarperfil' request.user.pk %}" method="GET">
                     <button class="bg-red-600 text-white py-1 px-3 rounded-md">Editar Perfil</button>
                 </a>
             </div>
